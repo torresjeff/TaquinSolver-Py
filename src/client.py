@@ -8,13 +8,25 @@ esta funcion genera una mtriz de nXn con numeros aleatorios
 
 
 def generate_matrix(n):
+    l = []
+
     matrix = [None] * n
     for i in range(n):
         matrix[i] = [None] * n
 
+    for i in range(n*n-1):
+        l.append(i + 1)
+
+    print(l)
+
     for i in range(n):
         for j in range(n):
-            matrix[i][j] = randint(1, n)
+            if len(l) > 0:
+                random_index = randint(0, len(l)-1)
+                matrix[i][j] = l[random_index]
+                l.remove(l[random_index])
+
+    print("Generated matrix: ", matrix)
     return matrix
 
 
@@ -58,6 +70,7 @@ def challenge(domain, matrix, row, column, opponentId):
 
 def get_challenge(domain, pId):
     r = requests.get(domain + "/api/board/%i/" % (pId))
+    print(r)
 
 
 """
@@ -108,6 +121,7 @@ def move_down(domain, pId):
 
 def create_player(domain, pId, name):
     response = requests.post(domain + "/api/player/%i/new/%s/" % (pId, name))
+    print(response)
 
 
 def check(domain, pid):
