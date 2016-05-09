@@ -1,25 +1,35 @@
 import client as taquin
-
+from solver import *
 
 def main():
 
-
+    # TODO: uncomment
+    """
     domain = "http://localhost:8080" # domain al que nos vamos a conectar
     pid = input("Ingrese el id del jugador: ")
     pid = int(pid)
     name = input("Ingrese el nombre del jugador: ")
     taquin.create_player(domain, pid, name)
-
+    """
 
     option = int(input("1) Single player, 2) Resolver un reto (Multiplayer), 3) Retar a un jugador, -1) salir\n"))
     while option != -1:
         if option == 1:
             size = int(input("Ingrese el tamaño N del tablero: "))
             matrix = taquin.generate_matrix(size)  # generamos una matrix de size * size
-            taquin.generateBoard(domain, matrix, size-1, size-1) # mandamos la matriz para que se display en la pagina
+
+            # TODO: uncomment lo de abajo. Por ahora no nos interesa utilizar la interfaz grafica
+            # taquin.generateBoard(domain, matrix, size-1, size-1) # mandamos la matriz para que se display en la pagina
+
             print("Tablero generado: ")
             print(matrix)
 
+            if is_solvable(matrix, size):
+                print("El tablero SI se puede resolver")
+            else:
+                print("El tablero NO se puede resolver")
+
+            """
             while True:
                 direction = input("Ingrese la direccion r, l, u, d, magic ")
                 if direction == "r":
@@ -36,6 +46,8 @@ def main():
                     taquin.check(domain, pid)
                     taquin.check(domain, pid)
                     taquin.check(domain, pid)
+            """
+
         elif option == 2:  # todavia no sirve
             taquin.get_challenge(domain, pid)
         elif option == 3:
