@@ -11,7 +11,7 @@ def main():
     taquin.create_player(domain, pid, name)
 
 
-    option = int(input("1) Resolver un reto, 2) Retar a un jugador, -1) salir\n"))
+    option = int(input("1) Single player, 2) Resolver un reto (Multiplayer), 3) Retar a un jugador, -1) salir\n"))
     while option != -1:
         if option == 1:
             size = int(input("Ingrese el tamaño N del tablero: "))
@@ -36,8 +36,9 @@ def main():
                     taquin.check(domain, pid)
                     taquin.check(domain, pid)
                     taquin.check(domain, pid)
-
-        elif option == 2:
+        elif option == 2:  # todavia no sirve
+            taquin.get_challenge(domain, pid)
+        elif option == 3:
             opponent = input("Ingrese el id del oponente: ")
             opponent = int(opponent)
             size = int(input("Ingrese el tamaño N del tablero: "))
