@@ -1,5 +1,5 @@
 import client as taquin
-from solver import *
+from Board import *
 
 
 def main():
@@ -19,13 +19,15 @@ def main():
             size = int(input("Ingrese el tamaño N del tablero: "))
             matrix = taquin.generate_matrix(size)  # generamos una matrix de size * size
 
+            board = Board(matrix, size)
+
             # TODO: uncomment. Por ahora no nos interesa utilizar la interfaz grafica
             # taquin.generateBoard(domain, matrix, size-1, size-1) # mandamos la matriz para que se display en la pagina
 
-            if is_solvable(matrix, size):
+            if board.is_solvable():
                 print("El tablero SI se puede resolver")
                 #Llamar funcion que resuelva el tablero
-                
+
             else:
                 print("El tablero NO se puede resolver")
 
