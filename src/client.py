@@ -17,8 +17,6 @@ def generate_matrix(n):
     for i in range(n*n-1):
         l.append(i + 1)
 
-    print(l)
-
     for i in range(n):
         for j in range(n):
             if len(l) > 0:
@@ -26,7 +24,7 @@ def generate_matrix(n):
                 matrix[i][j] = l[random_index]
                 l.remove(l[random_index])
 
-    print("Generated matrix: ", matrix)
+    print("Tablero generado:\n", matrix)
     return matrix
 
 
