@@ -6,17 +6,26 @@ class Board:
 
     # Constructor que recibe un tablero.
     # mat = tablero, n = numero de filas, x = fila de la pieza vacia, y = columna de la pieza vacia, previous_board = arbol padre
-    def __init__(self, mat, n, x, y, previous_board=None):
+    def __init__(self, mat, n, x, y, previous_board=None, moves=0):
         self.matrix = mat
         self.size = n
         self.previous = previous_board
         self.priority_queue = []
         self.x = x
         self.y = y
+        self.moves = moves
 
     # Retorna el tamaño del tablero (numero de filas)
     def size(self):
         return self.size
+
+    # Retorna el numero de movimientos que se han hecho en el tablero hasta el momento
+    def movements(self):
+        return self.moves
+
+    # Retorna el tablero actual en forma de matriz
+    def matrix(self):
+        return self.matrix
 
     # Retorna True si la pieza "en blanco" se encuentra en una fila impar, False si está en una fila par
     def blank_piece_odd_row(self):
@@ -28,13 +37,7 @@ class Board:
 
     # Retorna True si el tablero se puede resolver, False si no se puede resolver
     def is_solvable(self):
-        l = []
-
-        for i in range(self.size):
-            for j in range(self.size):
-                l.append(self.matrix[i][j])
-
-        inversions = self.count_inversions(l)
+        inversions = self.count_inversions()
 
         return ((self.size % 2 != 0) and (inversions % 2 == 0)) or ((self.size % 2 == 0) and (self.blank_piece_odd_row() == (inversions % 2 == 0)))
 
@@ -48,7 +51,13 @@ class Board:
     #    El elemento "2" produce 1 inversión porque de los elementos que le siguen solo el 1 es menor que él.
     #    El elemento "8" produce 3 inversiones porque 5, 6, 7 son menores que el.
     # 3) El tablero solucionado tiene 0 inversiones
-    def count_inversions(self, l):
+    def count_inversions(self):
+        l = []
+
+        for i in range(self.size):
+            for j in range(self.size):
+                l.append(self.matrix[i][j])
+
         inversions = 0
         for i in range(len(l)):
             for j in range(i + 1, len(l)):
@@ -59,10 +68,11 @@ class Board:
         return inversions
 
     # Determina el costo del tablero utilizando la distancia Manhattan: https://es.wikipedia.org/wiki/Geometr%C3%ADa_del_taxista
+    # más el número de movimientos que se han hecho hasta el momento
     def cost(self):
         cost = 0
-        print("cost:")
-        print(self.matrix)
+        # print("self, cost: ", self)
+
         for i in range(self.size):
             for j in range(self.size):
                 if self.matrix[i][j] is not None:
@@ -73,9 +83,9 @@ class Board:
                         row -= 1
                     else:
                         column -= 1
-                    print("cost for %i = %i" % (self.matrix[i][j], abs(row-i) + abs(column-j)))
+                    # print("cost for %i = %i" % (self.matrix[i][j], abs(row-i) + abs(column-j)))
                     cost += abs(row-i) + abs(column-j)
-        return cost
+        return cost + self.moves
 
     # Retorna True si el tablero se encuentra en el estado resuelto, False si no
     def is_solved(self):
@@ -86,6 +96,7 @@ class Board:
                     return False
                 current += 1
         return True
+        # return self.count_inversions() == 0
 
     # Genera los tableros hijos y los guarda en la cola de prioridad, el primer elemento es el de mayor prioridad (menor costo, el mejor)
     def possible_movements(self):
@@ -128,8 +139,8 @@ class Board:
     def move_up(self):
         board = deepcopy(self.matrix)
         board[self.x][self.y], board[self.x - 1][self.y] = board[self.x - 1][self.y], board[self.x][self.y]  # swap
-        new_board = Board(board, self.size, self.x - 1, self.y, self)
-        print("move_up: ", board)
+        new_board = Board(board, self.size, self.x - 1, self.y, self, self.moves + 1)
+        # print("move_up: ", board)
         return new_board
 
     # verifica que la ficha vacía se pueda mover hacia abajo
@@ -140,8 +151,8 @@ class Board:
     def move_down(self):
         board = deepcopy(self.matrix)
         board[self.x][self.y], board[self.x + 1][self.y] = board[self.x + 1][self.y], board[self.x][self.y]  # swap
-        new_board = Board(board, self.size, self.x + 1, self.y, self)
-        print("move_down: ", board)
+        new_board = Board(board, self.size, self.x + 1, self.y, self, self.moves + 1)
+        # print("move_down: ", board)
         return new_board
 
     # verifica que la ficha vacía se pueda mover hacia la izquierda
@@ -152,8 +163,8 @@ class Board:
     def move_left(self):
         board = deepcopy(self.matrix)
         board[self.x][self.y], board[self.x][self.y - 1] = board[self.x][self.y - 1], board[self.x][self.y]  # swap
-        new_board = Board(board, self.size, self.x, self.y - 1, self)
-        print("move_left: ", board)
+        new_board = Board(board, self.size, self.x, self.y - 1, self, self.moves + 1)
+        # print("move_left: ", board)
         return new_board
 
     # verifica que la ficha vacía se pueda mover hacia la derecha
@@ -164,8 +175,8 @@ class Board:
     def move_right(self):
         board = deepcopy(self.matrix)
         board[self.x][self.y], board[self.x][self.y + 1] = board[self.x][self.y + 1], board[self.x][self.y]  # swap
-        new_board = Board(board, self.size, self.x, self.y + 1, self)
-        print("move_right: ", board)
+        new_board = Board(board, self.size, self.x, self.y + 1, self, self.moves + 1)
+        # print("move_right: ", board)
         return new_board
 
     # Equivalente al "Comparator" de Java, determina si un tablero es igual a otro si las fichas estan en las mismas posiciones. Si son iguales no se vuelven a calcular sus posibles movimientos.
