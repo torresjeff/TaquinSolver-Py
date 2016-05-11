@@ -17,15 +17,23 @@ def main():
     while option != -1:
         if option == 1:
             # TODO: Por ahora solo sirve con tableros 2x2
-            size = int(input("Ingrese el tamaño N del tablero: "))
-            matrix = taquin.generate_matrix(size)  # generamos una matrix de size * size
-            board = Board(matrix, size, size-1, size-1)
+            #size = int(input("Ingrese el tamaño N del tablero: "))
+            #matrix = taquin.generate_matrix(size)  # generamos una matrix de size * size
+            #board = Board(matrix, size, size-1, size-1)
 
             # -------------- PARA PROBAR 2x2 ------------
             #matrix = [[3, 1],
             #         [2, None]]
 
             #board = Board(matrix, 2, 1, 1)
+            # -------------------------------------------
+
+            # -------------- PARA PROBAR 3x3 ------------
+            matrix = [[1, 3, 4],
+                      [2, 5, 6],
+                      [7, 8, None]]
+
+            board = Board(matrix, 3, 2, 2)
             # -------------------------------------------
 
             # TODO: uncomment. Por ahora no nos interesa utilizar la interfaz grafica

@@ -5,7 +5,8 @@ from heapq import heapify,  heappop, heappush
 class Board:
 
     # Constructor que recibe un tablero.
-    # mat = tablero, n = numero de filas, x = fila de la pieza vacia, y = columna de la pieza vacia, previous_board = arbol padre
+    # mat = tablero, n = numero de filas, x = fila de la pieza vacia, y = columna de la pieza vacia,
+    # previous_board = arbol padre, moves = numero de movimientos que se han hecho para llegar al tablero actual
     def __init__(self, mat, n, x, y, previous_board=None, moves=0):
         self.matrix = mat
         self.size = n
