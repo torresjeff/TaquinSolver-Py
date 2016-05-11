@@ -5,12 +5,16 @@ from Solver import *
 def send_movements(domain, pid, movements):
     for i in movements:
         if i == "r":
+            print("Movimiento hacia la derecha")
             taquin.move_right(domain,pid)
         elif i == "l":
+            print("Movimiento hacia la izquierda")
             taquin.move_left(domain,pid)
         elif i == "u":
+            print("Movimiento hacia arriba")
             taquin.move_up(domain,pid)
         elif i == "d":
+            print("Movimiento hacia abajo")
             taquin.move_down(domain,pid)
 
 def main():
