@@ -24,7 +24,6 @@ def generate_matrix(n):
                 matrix[i][j] = l[random_index]
                 l.remove(l[random_index])
 
-    print("Tablero generado:\n", matrix)
     return matrix
 
 

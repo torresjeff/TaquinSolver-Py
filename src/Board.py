@@ -5,7 +5,8 @@ from heapq import heapify,  heappop, heappush
 class Board:
 
     # Constructor que recibe un tablero.
-    # mat = tablero, n = numero de filas, x = fila de la pieza vacia, y = columna de la pieza vacia, previous_board = arbol padre
+    # mat = tablero, n = numero de filas, x = fila de la pieza vacia, y = columna de la pieza vacia,
+    # previous_board = arbol padre, moves = numero de movimientos que se han hecho para llegar al tablero actual
     def __init__(self, mat, n, x, y, previous_board=None, moves=0):
         self.matrix = mat
         self.size = n
@@ -14,6 +15,14 @@ class Board:
         self.x = x
         self.y = y
         self.moves = moves
+
+    # Retorna la posicion en x del None (ficha vacia)
+    def getX(self):
+        return self.x
+
+    # Retorna la posicion en y del None (ficha vacia)
+    def getY(self):
+        return self.y
 
     # Retorna el tamaño del tablero (numero de filas)
     def size(self):
@@ -92,7 +101,7 @@ class Board:
         current = 1
         for i in range(self.size):
             for j in range(self.size):
-                if self.matrix[i][j] != current and self.matrix[i][j] is not None:
+                if self.matrix[i][j] is not None and self.matrix[i][j] != current:
                     return False
                 current += 1
         return True
@@ -101,32 +110,47 @@ class Board:
     # Genera los tableros hijos y los guarda en la cola de prioridad, el primer elemento es el de mayor prioridad (menor costo, el mejor)
     def possible_movements(self):
         boards = []
+        #print("board, parent: ", self.previous)
+        #print("board, self: ", self)
         if self.can_move_up():
             board = self.move_up()
             # print("move_up: ", board)
-            if board != self:
+            if board != self.previous:
+                #print("\tboard diferent than previous: ", board)
                 boards.append(board)
+            #else:
+                #print("\tboard equal to previous: ", board)
         if self.can_move_left():
             # print("move_left: ", board)
             board = self.move_left()
-            if board != self:
+            if board != self.previous:
+                #print("\tboard diferent than previous: ", board)
                 boards.append(board)
+            #else:
+                #print("\tboard equal to previous: ", board)
 
         if self.can_move_right():
             # print("move_right: ", board)
             board = self.move_right()
-            if board != self:
+            if board != self.previous:
+                #print("\tboard diferent than previous: ", board)
                 boards.append(board)
+            #else:
+                #print("\tboard equal to previous: ", board)
 
         if self.can_move_down():
             board = self.move_down()
             # print("move_down: ", board)
-            if board != self:
+            if board != self.previous:
+                #print("\tboard diferent than previous: ", board)
                 boards.append(board)
+            #else:
+                #print("\tboard equal to previous: ", board)
 
         # heappush(heap, boards)
         # TODO: optimizar, no hacer heapify cada vez
         heapify(boards)
+        #print("board, heap: ", boards)
         # heap.append(boards)
         # heapify(heap)
         return boards
@@ -181,11 +205,18 @@ class Board:
 
     # Equivalente al "Comparator" de Java, determina si un tablero es igual a otro si las fichas estan en las mismas posiciones. Si son iguales no se vuelven a calcular sus posibles movimientos.
     def __eq__(self, other):
-        for i in range(self.size):
-            for j in range(self.size):
-                if self.matrix[i][j] != other.matrix[i][j]:
-                    return False
-        return True
+        if isinstance(other, Board):
+            for i in range(self.size):
+                for j in range(self.size):
+                    if self.matrix[i][j] != other.matrix[i][j]:
+                        return False
+            return True
+        else:
+            return False
+
+    # Implementación de not equal
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     # Se utiliza para comparar si un tablero es menor que otro (más barato), se hace comparando los costos de ambos tableros
     def __lt__(self, other):
@@ -199,7 +230,3 @@ class Board:
     # "toString()"
     def __repr__(self):
         return self.__str__()
-
-
-
-
