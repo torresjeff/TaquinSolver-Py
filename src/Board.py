@@ -15,6 +15,14 @@ class Board:
         self.y = y
         self.moves = moves
 
+    # Retorna la posicion en x del None
+    def getX(self):
+        return self.x
+
+    # Retorna la posicion en y del None
+    def getY(self):
+        return self.y
+
     # Retorna el tamaño del tablero (numero de filas)
     def size(self):
         return self.size
@@ -199,7 +207,3 @@ class Board:
     # "toString()"
     def __repr__(self):
         return self.__str__()
-
-
-
-

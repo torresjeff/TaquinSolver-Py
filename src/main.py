@@ -2,16 +2,26 @@ import client as taquin
 from Board import *
 from Solver import *
 
+def send_movements(domain, pid, movements):
+    for i in movements:
+        if i == "r":
+            taquin.move_right(domain,pid)
+        elif i == "l":
+            taquin.move_left(domain,pid)
+        elif i == "u":
+            taquin.move_up(domain,pid)
+        elif i == "d":
+            taquin.move_down(domain,pid)
 
 def main():
     # TODO: uncomment. Por ahora no nos interesa utilizar la interfaz grafica
-    """
-    domain = "http://localhost:8080" # domain al que nos vamos a conectar
-    pid = input("Ingrese el id del jugador: ")
-    pid = int(pid)
+
+    domain = "http://localhost:8181" # domain al que nos vamos a conectar
+    pid = 1
+    '''pid = int(pid)
     name = input("Ingrese el nombre del jugador: ")
     taquin.create_player(domain, pid, name)
-    """
+    '''
 
     option = int(input("1) Single player, 2) Resolver un reto (Multiplayer), 3) Retar a un jugador, -1) salir\n"))
     while option != -1:
@@ -29,12 +39,14 @@ def main():
             # -------------------------------------------
 
             # TODO: uncomment. Por ahora no nos interesa utilizar la interfaz grafica
-            # taquin.generateBoard(domain, matrix, size-1, size-1) # mandamos la matriz para que se display en la pagina
+            taquin.generateBoard(domain, matrix, size-1, size-1) # mandamos la matriz para que se display en la pagina
 
             if board.is_solvable():
                 print("El tablero SI se puede resolver")
                 solver = Solver(board)
-                solver.solve()
+                movements = solver.solve()
+                if len(movements) != 0:
+                    send_movements(domain,pid,movements)
 
             else:
                 print("El tablero NO se puede resolver")
