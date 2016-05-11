@@ -22,10 +22,10 @@ def main():
             board = Board(matrix, size, size-1, size-1)
 
             # -------------- PARA PROBAR 2x2 ------------
-            # matrix = [[3, 1],
-            #          [2, None]]
+            #matrix = [[3, 1],
+            #         [2, None]]
 
-            # board = Board(matrix, 2, 1, 1)
+            #board = Board(matrix, 2, 1, 1)
             # -------------------------------------------
 
             # TODO: uncomment. Por ahora no nos interesa utilizar la interfaz grafica
